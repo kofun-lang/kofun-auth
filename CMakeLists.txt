@@ -19,7 +19,11 @@ target_link_libraries(kofun_auth PUBLIC OpenSSL::Crypto)
 if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
   target_compile_options(kofun_auth PRIVATE -Wall -Wextra -Wpedantic)
 elseif(MSVC)
-  target_compile_options(kofun_auth PRIVATE /W4 /std:c11)
+  target_compile_options(kofun_auth PRIVATE
+    /W4
+    /std:c11
+    /experimental:c11atomics
+  )
 endif()
 
 if(BUILD_TESTING)
