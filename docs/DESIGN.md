@@ -7,7 +7,7 @@ offers. These are settled:
 
 | Refused | Reason |
 |---|---|
-| Implicit flow (`response_type=token`) | tokens in the URL; removed in OAuth 2.1 |
+| Implicit flow (`response_type=token`) | tokens in the URL; omitted by the current OAuth 2.1 draft and deprecated by RFC 9700 |
 | Resource owner password credentials | the client sees the password |
 | Authorization code without PKCE | code interception on public clients |
 | Client secret in a public client | it is not a secret on a user's machine |
@@ -91,11 +91,12 @@ window — a detail that most implementations skip and attackers do not.
 
 ## 8. Layering against the language
 
-- **Stage 0** — cryptographic primitives are C-ABI shims. Protocol state
-  machines, claim validation, and error taxonomy are written in Kofun, because
-  those are where a type system earns its keep.
-- **Stage 1** — HTTP client and JSON handling move onto Kofun stdlib as it
-  stabilises.
+- **Stage 0** — a narrow C11 kernel makes the public-client and one-shot PKCE
+  boundaries enforceable while Kofun still lacks cross-file opacity. OpenSSL
+  supplies RNG, SHA-256, constant-time comparison, and cleansing.
+- **Stage 1** — once Kofun enforces module and FFI boundaries, the protocol
+  state machine and error taxonomy move into Kofun. HTTP client and JSON
+  handling follow as the standard library stabilises.
 - **Stage 2** — reconsider primitives. Reimplementing crypto is not a goal; it
   becomes reasonable only with constant-time guarantees in the language.
 
